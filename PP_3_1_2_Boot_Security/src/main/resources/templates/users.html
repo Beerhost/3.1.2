@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Users</title>
+</head>
+<body>
+<h1>Список всех пользователей</h1>
+
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя пользователя</th>
+            <th>Email</th>
+            <th>Роли</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <span th:each="role, iterStat : ${user.roles}"
+                      th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
+            </td>
+            <td>
+                <a th:href="@{'/admin/users/edit/' + ${user.id}}">Редактировать</a>
+                <form th:action="@{'/admin/users/delete/' + ${user.id}}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2>Добавить нового пользователя:</h2>
+    <form th:action="@{/admin/users/create }" method="post">
+        <div>
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+        </div>
+
+        <div>
+            <label>Роли:</label>
+            <div th:each="role : ${roles}">
+                <input type="checkbox" name="roles" th:value="${role.id}" th:id="'role_' + ${role.id}">
+                <label th:for="'role_' + ${role.id}" th:text="${role.name}"></label>
+            </div>
+        </div>
+
+        <button type="submit">Создать пользователя</button>
+    </form>
+</div>
+
+<div>
+    <a th:href="@{/admin}">Назад к панели администратора</a>
+</div>
+</body>
+</html>

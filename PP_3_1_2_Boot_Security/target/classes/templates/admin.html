@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+<h1>Панель администратора</h1>
+
+<div>
+    <h2>Текущий пользователь:</h2>
+    <p><strong>Имя:</strong> <span th:text="${currentUser.username}"></span></p>
+    <p><strong>Роли:</strong>
+        <span th:each="role, iterStat : ${currentUser.roles}"
+              th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
+    </p>
+</div>
+
+<div>
+    <h2>Управление пользователями:</h2>
+    <a th:href="@{/admin/users/list}">Перейти к списку пользователей</a>
+</div>
+
+<div>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+
+    <a th:href="@{/user}">Личный кабинет</a>
+</div>
+</body>
+</html>

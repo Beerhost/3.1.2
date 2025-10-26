@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Spring Security Example</title>
+</head>
+<body>
+<h1>User, welcome spring boot security page!</h1>
+<div>
+    <h2>Информация о пользователе:</h2>
+    <p><strong>ID:</strong> <span th:text="${currentUser.id}"></span></p>
+    <p><strong>Имя пользователя:</strong> <span th:text="${currentUser.username}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${currentUser.email}"></span></p>
+    <p><strong>Роли:</strong>
+        <span th:each="role, iterStat : ${currentUser.roles}"
+              th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
+    </p>
+</div>
+
+<div>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+
+    <a th:href="@{/admin}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        Панель администратора
+    </a>
+</div>
+
+</body>
+</html>
